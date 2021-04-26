@@ -1,0 +1,10 @@
+*.exe
+go.sum
+
+.DS_Store
+.idea
+.history
+.images
+.local
+.vscode
+.prettierrc
