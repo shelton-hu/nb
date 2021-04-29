@@ -6,15 +6,21 @@ import (
 
 	microTrace "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
 	opentracing "github.com/opentracing/opentracing-go"
+
+	"github.com/shelton-hu/logger"
 )
 
 func Trace(ctx context.Context) context.Context {
 	name, file, line := runFunc()
-	ctx, span, _ := microTrace.StartSpanFromContext(ctx, opentracing.GlobalTracer(), name)
+	ctxWithTrace, span, err := microTrace.StartSpanFromContext(ctx, opentracing.GlobalTracer(), name)
+	if err != nil {
+		logger.Error(ctx, err.Error())
+		return ctx
+	}
 	defer span.Finish()
 	span.LogKV("file", file)
 	span.LogKV("line", line)
-	return ctx
+	return ctxWithTrace
 }
 
 func runFunc() (name string, file string, line int) {
