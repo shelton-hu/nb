@@ -2,6 +2,7 @@ package functrace
 
 import (
 	"context"
+	"os"
 	"runtime"
 
 	microTrace "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/shelton-hu/logger"
 )
+
+var projectDir, _ = os.Getwd()
 
 func Trace(ctx context.Context) context.Context {
 	name, file, line := runFunc()
@@ -20,6 +23,7 @@ func Trace(ctx context.Context) context.Context {
 	defer span.Finish()
 	span.LogKV("file", file)
 	span.LogKV("line", line)
+	span.LogKV("root", projectDir)
 	return ctxWithTrace
 }
 
