@@ -18,7 +18,7 @@ func Trace(ctx context.Context) {
 
 func runFunc() (name string, file string, line int) {
 	pc := make([]uintptr, 1)
-	runtime.Callers(2, pc)
+	runtime.Callers(3, pc)
 	f := runtime.FuncForPC(pc[0])
 	name = f.Name()
 	file, line = f.FileLine(pc[0])
