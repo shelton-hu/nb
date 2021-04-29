@@ -8,12 +8,13 @@ import (
 	opentracing "github.com/opentracing/opentracing-go"
 )
 
-func Trace(ctx context.Context) {
+func Trace(ctx context.Context) context.Context {
 	name, file, line := runFunc()
-	_, span, _ := microTrace.StartSpanFromContext(ctx, opentracing.GlobalTracer(), name)
+	ctx, span, _ := microTrace.StartSpanFromContext(ctx, opentracing.GlobalTracer(), name)
 	defer span.Finish()
 	span.LogKV("file", file)
 	span.LogKV("line", line)
+	return ctx
 }
 
 func runFunc() (name string, file string, line int) {
